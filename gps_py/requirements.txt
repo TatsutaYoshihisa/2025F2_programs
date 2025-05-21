@@ -1,0 +1,11 @@
+subprocess
+opencv-python
+datatime
+numpy
+pundas
+fractions
+piexif
+Pillow
+scipy
+os
+re

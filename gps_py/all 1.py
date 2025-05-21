@@ -31,18 +31,22 @@ def get_basename_without_extension(file_path):
 if __name__ == '__main__':
     #######################################
     # 変更ポイント
-    project_dir = "project22/5"
-    movie_path = r"C:\Users\user\Desktop\gopro_movie\GX010585.MP4"
+    project_dir = "D://project1"
+    movie_basename = "GS010663.360"
+    movie_path = "D://2025F2//pointcloud//datas//" + movie_basename
     deltaframe = 10
-    resize_rate = 0.25
+    resize_rate = 1
     #######################################
 
     create_directories(project_dir)
     movie_basename = get_basename_without_extension(movie_path)
     out_bin_path = os.path.join(project_dir, movie_basename + ".bin")
     in_bin_path = out_bin_path
+    print("in_bin_path: ", in_bin_path)
     out_gpx_path = os.path.join(project_dir, movie_basename + ".gpx")
+    print("out_gpx_path: ", out_gpx_path)
     no_aud_mp4 = os.path.join(project_dir, movie_basename + "_noaud.mp4")
+    print("no_aud_mp4: ", no_aud_mp4)
     # run_ffmpeg_remove_audio(movie_path, no_aud_mp4)
     run_ffmpeg(movie_path, out_bin_path)
     run_gopro2gpx(in_bin_path, out_gpx_path)

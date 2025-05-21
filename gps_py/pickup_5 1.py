@@ -31,18 +31,29 @@ def process_gps_data(input_file, output_file):
             lon = float(match.group(2))
             latarr.append(lat)
             longarr.append(lon)
-            get_ele(lon,lat)
+            ele = get_ele(lon, lat)
+            if ele is None:
+                ele = 0.0  # 念のため fallback
+            elearr.append(ele)  
         else:
             print("latとlonが見つかりませんでした。")
 
-    def get_ele(longitude, latitude):
-        url = "http://cyberjapandata2.gsi.go.jp/general/dem/scripts/getelevation.php" \
-            "?lon=%s&lat=%s&outtype=%s" % (longitude, latitude, "JSON")
-        resp = requests.get(url, timeout=3)
-        data = resp.json()
-        elevation = data["elevation"]
-        elearr.append(elevation)
-        # print(elevation)
+    def get_ele(lon, lat):
+        url = f"http://cyberjapandata2.gsi.go.jp/general/dem/scripts/getelevation.php?lon={lon}&lat={lat}&outtype=JSON"
+        retries = 3
+        for attempt in range(retries):
+            try:
+                resp = requests.get(url, timeout=5)
+                resp.raise_for_status()
+                data = resp.json()
+                return data.get("elevation", None)
+            except requests.exceptions.ReadTimeout:
+                print(f"Timeout: {url} (attempt {attempt+1}/{retries})")
+                time.sleep(1)
+            except Exception as e:
+                print(f"Error: {e}")
+                break
+        return 0.0  
 
     def get_time(input_str):
         # 文字列から日付と時刻を解析

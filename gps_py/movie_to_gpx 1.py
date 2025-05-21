@@ -1,9 +1,11 @@
 import subprocess
 
+# 1. ここで共通の ffmpeg パスを定義
+ffmpeg = r'D:\\ffmpeg-7.1.1-essentials_build\\ffmpeg-7.1.1-essentials_build\\bin\\ffmpeg.exe'
 
 def run_ffmpeg(mp4path, out_bin_path):
     command = [
-        'ffmpeg',
+        ffmpeg,
         '-y',
         '-i', mp4path,
         '-codec', 'copy',
@@ -28,7 +30,7 @@ def run_ffmpeg(mp4path, out_bin_path):
 
 def run_ffmpeg_remove_audio(input_path, output_path):
     command = [
-        'ffmpeg',
+        ffmpeg,
         '-i', input_path,
         '-vcodec', 'copy',
         '-an',
@@ -49,11 +51,14 @@ def run_ffmpeg_remove_audio(input_path, output_path):
 
 
 def run_gopro2gpx(in_bin_path, out_gpx_path):
+    #######################################
+    # 変更ポイント
     command = [
-        'gopro2gpx',
+        r"C:\Users\user\go\bin\gopro2gpx.exe",
         '-i', in_bin_path,
         '-o', out_gpx_path
     ]
+    #######################################
 
     try:
         # subprocess.runを使用してコマンドを実行
